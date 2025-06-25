@@ -1,0 +1,39 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+
+img {
+    aspect-ratio: 1;
+    height: 100%;
+}
+
+.body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 8px;
+
+    .alcoholic-label {
+        color: white;
+        width: fit-content;
+        padding: 4px;
+        border-radius: 100px;
+
+        &.alcoholic {
+            background-color: green;
+        }
+
+        &.non-alcoholic {
+            background-color: blue;
+        }
+    }
+}
+
+span.icon-star {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}

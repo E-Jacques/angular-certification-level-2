@@ -1,0 +1,8 @@
+<app-filter-header (filterChange)="onFilterChange($event)"></app-filter-header>
+<ul>
+    @for (cocktail of cocktails$ | async | filterCocktails: filter(); track cocktail.id) {
+    <li><app-cocktail-card [cocktail]="cocktail"></app-cocktail-card></li>
+    }@empty {
+    <p>No cocktails found</p>
+    }
+</ul>
