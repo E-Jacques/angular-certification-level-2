@@ -3,10 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CocktailCardComponent } from './cocktail-card.component';
 import { By } from '@angular/platform-browser';
 import { JoinPipe } from '../../pipes/join.pipe';
+import { Cocktail } from '../../@types/internal/cocktails';
 
-const COCKTAIL = {
+const COCKTAIL: Cocktail = {
   id: "1",
   name: 'Mojito',
+  liked: false,
   isAlcoholic: true,
   imageUrl: 'https://example.com/mojito.jpg',
   ingredients: ['Mint', 'Lime', 'Rum', 'Sugar', 'Soda Water'],
@@ -63,4 +65,28 @@ describe('CocktailCardComponent', () => {
     const starElement: HTMLElement = fixture.debugElement.query(By.css('.icon-star')).nativeElement;
     expect(starElement.id).toBe('star-aze123');
   });
+
+  it("should emit a 'toggleLike' event when user click icon-star", () => {
+    fixture.componentRef.setInput("cocktail", { ...COCKTAIL, id: "aze123" });
+    spyOn(component.toggleLike, 'emit');
+    fixture.detectChanges();
+
+    const starElement: HTMLElement = fixture.debugElement.query(By.css('.icon-star')).nativeElement;
+    starElement.click();
+    expect(component.toggleLike.emit).toHaveBeenCalled();
+  });
+
+  it("should apply the active class to the icon-star element if cocktail is liked", () => {
+    fixture.componentRef.setInput("cocktail", { ...COCKTAIL, liked: true });
+    fixture.detectChanges();
+    const starElement: HTMLElement = fixture.debugElement.query(By.css('.icon-star')).nativeElement;
+    expect(starElement.className).toContain("active")
+  })
+
+  it("shouldn't apply the active class to the icon-star element if cocktail is not liked", () => {
+    fixture.componentRef.setInput("cocktail", { ...COCKTAIL, liked: false });
+    fixture.detectChanges();
+    const starElement: HTMLElement = fixture.debugElement.query(By.css('.icon-star')).nativeElement;
+    expect(starElement.className).not.toContain("active")
+  })
 });

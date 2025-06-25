@@ -7,4 +7,5 @@
     </p>
     <p data-testid="ingredients">{{ cocktail.ingredients | join: ' | ' }}</p>
 </div>
-<span class="icon-star" [attr.id]="'star-' + cocktail.id"></span>
+<span class="icon-star" tabindex="0" [attr.id]="'star-' + cocktail.id" [ngClass]="{'active': cocktail.liked}"
+    (click)="onIconStarClick()" (keyup.enter)="onIconStarClick()"></span>

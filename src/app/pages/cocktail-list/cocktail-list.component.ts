@@ -5,6 +5,7 @@ import { CocktailStateService } from '../../services/cocktail-state.service';
 import { AsyncPipe } from '@angular/common';
 import { CocktailCardComponent } from "../../components/cocktail-card/cocktail-card.component";
 import { FilterCocktailsPipe } from "../../pipes/filter-cocktails.pipe";
+import { CocktailStoreService } from '../../services/cocktail-store.service';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -19,6 +20,11 @@ export class CocktailListComponent {
    * The cocktail state service dependency.
    */
   private stateService = inject(CocktailStateService);
+
+  /**
+   * The cocktail store service dependency.
+   */
+  private storeService = inject(CocktailStoreService);
 
   /**
    * The filter object, wrapped in a signal, that is used to filter unwanted cocktails.
@@ -39,5 +45,14 @@ export class CocktailListComponent {
    */
   onFilterChange(newFilter: CocktailFilter) {
     this.filter.set(newFilter);
+  }
+
+  /**
+   * Handles the 'toggleLike' event from cocktail card.
+   * 
+   * @param id the identifier of the liked cocktail.
+   */
+  onCocktailToggleLike(id: string) {
+    this.storeService.toggleLike(id);
   }
 }
