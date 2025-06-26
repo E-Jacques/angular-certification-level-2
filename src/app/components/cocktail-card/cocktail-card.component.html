@@ -3,11 +3,7 @@
     <a [routerLink]="['cocktails', cocktail().id]">
         <h2>{{ cocktail().name }}</h2>
     </a>
-    <p class="alcoholic-label" data-testid="alcoholic-label"
-        [ngClass]="{ 'alcoholic': cocktail().isAlcoholic, 'non-alcoholic': !cocktail().isAlcoholic }">
-        {{ cocktail().isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
-    </p>
+    <app-cocktails-tags [cocktail]="cocktail()"></app-cocktails-tags>
     <p data-testid="ingredients">{{ cocktail().ingredients | join: ' | ' }}</p>
 </div>
-<span class="icon-star" tabindex="0" [attr.id]="'star-' + cocktail().id" [ngClass]="{'active': cocktail().liked}"
-    (click)="onIconStarClick()" (keyup.enter)="onIconStarClick()"></span>
+<app-like-star [cocktail]="cocktail()" (toggle)="onToggleLike()"></app-like-star>

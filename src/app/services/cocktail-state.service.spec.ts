@@ -5,25 +5,7 @@ import { of, Subject } from 'rxjs';
 import { GetCocktailsDto } from '../@types/dto/get-cocktails';
 import { CocktailStoreService } from './cocktail-store.service';
 import { signal, WritableSignal } from '@angular/core';
-
-const COCKTAILS: GetCocktailsDto = [
-  {
-    id: "1",
-    name: 'Mojito',
-    isAlcoholic: true,
-    imageUrl: 'https://example.com/mojito.jpg',
-    ingredients: ['Mint', 'Lime', 'Rum', 'Sugar', 'Soda Water'],
-    instructions: 'Mix all ingredients and serve chilled.'
-  },
-  {
-    id: "2",
-    name: 'Virgin Mojito',
-    isAlcoholic: false,
-    imageUrl: 'https://example.com/virgin-mojito.jpg',
-    ingredients: ['Mint', 'Lime', 'Sugar', 'Soda Water'],
-    instructions: 'Mix all ingredients and serve chilled.'
-  }
-];
+import { COCKTAILS_DTO } from '../utils/mock-cocktail';
 
 describe('CocktailStateService', () => {
   let service: CocktailStateService;
@@ -43,14 +25,14 @@ describe('CocktailStateService', () => {
     const cocktails1 = service.getCocktails();
     expect(cocktails1()).toHaveSize(0);
 
-    cocktailsMock.next(COCKTAILS);
+    cocktailsMock.next(COCKTAILS_DTO);
     const cocktails2 = service.getCocktails();
     expect(cocktails2()).toHaveSize(2);
   });
 
   it('should initialize the cocktail list using the http response', () => {
     const httpService = TestBed.inject(CocktailHttpService);
-    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS));
+    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS_DTO));
 
     service = TestBed.inject(CocktailStateService);
 
@@ -80,7 +62,7 @@ describe('CocktailStateService', () => {
   it("should use the cocktail store to determine if a cocktail have been liked", () => {
     const httpService = TestBed.inject(CocktailHttpService);
     const storeService = TestBed.inject(CocktailStoreService);
-    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS));
+    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS_DTO));
     spyOn(storeService, 'getLikedId').and.returnValue(signal(["2"]).asReadonly());
 
     service = TestBed.inject(CocktailStateService);
@@ -112,7 +94,7 @@ describe('CocktailStateService', () => {
     const liked: WritableSignal<string[]> = signal<string[]>([]);
     const httpService = TestBed.inject(CocktailHttpService);
     const storeService = TestBed.inject(CocktailStoreService);
-    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS));
+    spyOn(httpService, 'getCocktails').and.returnValue(of(COCKTAILS_DTO));
     spyOn(storeService, 'getLikedId').and.returnValue(liked.asReadonly());
 
     service = TestBed.inject(CocktailStateService);

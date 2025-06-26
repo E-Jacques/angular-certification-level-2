@@ -4,11 +4,13 @@ import { RouterLink } from '@angular/router';
 import { CocktailItem } from '../../@types/dto/get-cocktails';
 import { Cocktail } from '../../@types/internal/cocktails';
 import { CocktailStoreService } from '../../services/cocktail-store.service';
+import { CocktailsTagsComponent } from "../../components/cocktails-tags/cocktails-tags.component";
+import { LikeStarComponent } from "../../components/like-star/like-star.component";
 
 @Component({
   selector: 'app-cocktail-detail',
   standalone: true,
-  imports: [RouterLink, NgClass],
+  imports: [RouterLink, CocktailsTagsComponent, LikeStarComponent],
   templateUrl: './cocktail-detail.component.html',
   styleUrl: './cocktail-detail.component.scss'
 })
@@ -53,7 +55,7 @@ export class CocktailDetailComponent {
    * Handles the icon-star's click by toggling the like status of the 
    * cocktail associated with the viewed page. 
    */
-  public onIconStarClick() {
+  public onToggleLike() {
     const cocktail = this.cocktail();
     if (cocktail) {
       this.storeService.toggleLike(cocktail.id);

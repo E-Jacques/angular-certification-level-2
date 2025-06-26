@@ -13,15 +13,11 @@
     <div class="col">
         <div class="header">
             <h2>{{ cocktail.name }}</h2>
-            <span class="icon-star" [ngClass]="{ 'active': cocktail.liked }" tabindex="0"
-                [attr.id]="'star-' + cocktail.id" (click)="onIconStarClick()" (keyup.enter)="onIconStarClick()"></span>
+            <app-like-star [cocktail]="cocktail" (toggle)="onToggleLike()"></app-like-star>
         </div>
         <div class="body">
             <strong>Type:</strong>
-            <p class="alcoholic-label" data-testid="alcoholic-label"
-                [ngClass]="{ 'alcoholic': cocktail.isAlcoholic, 'non-alcoholic': !cocktail.isAlcoholic }">
-                {{ cocktail.isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
-            </p>
+            <app-cocktails-tags [cocktail]="cocktail"></app-cocktails-tags>
             <strong>Ingredients:</strong>
             <ul>
                 @for (ingredient of cocktail.ingredients; track ingredient) {

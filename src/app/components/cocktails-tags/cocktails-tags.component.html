@@ -1,0 +1,4 @@
+<p class="label" data-testid="alcoholic-label"
+    [ngClass]="{ 'alcoholic': cocktail().isAlcoholic, 'non-alcoholic': !cocktail().isAlcoholic }">
+    {{ cocktail().isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
+</p>

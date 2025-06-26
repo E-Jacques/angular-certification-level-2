@@ -3,11 +3,13 @@ import { Cocktail } from '../../@types/internal/cocktails';
 import { NgClass } from '@angular/common';
 import { JoinPipe } from "../../pipes/join.pipe";
 import { RouterLink } from '@angular/router';
+import { CocktailsTagsComponent } from "../cocktails-tags/cocktails-tags.component";
+import { LikeStarComponent } from "../like-star/like-star.component";
 
 @Component({
   selector: 'app-cocktail-card',
   standalone: true,
-  imports: [NgClass, JoinPipe, RouterLink],
+  imports: [JoinPipe, RouterLink, CocktailsTagsComponent, LikeStarComponent],
   providers: [JoinPipe],
   templateUrl: './cocktail-card.component.html',
   styleUrl: './cocktail-card.component.scss'
@@ -36,7 +38,7 @@ export class CocktailCardComponent {
    * 
    * Emit an 'toggleLike' event to parent component.
    */
-  public onIconStarClick() {
+  public onToggleLike() {
     this.toggleLike.emit();
   }
 }

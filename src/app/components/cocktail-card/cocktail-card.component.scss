@@ -20,24 +20,9 @@ img {
     flex-direction: column;
     justify-content: flex-start;
     padding: 8px;
-
-    .alcoholic-label {
-        color: white;
-        width: fit-content;
-        padding: 4px;
-        border-radius: 100px;
-
-        &.alcoholic {
-            background-color: blue;
-        }
-
-        &.non-alcoholic {
-            background-color: green;
-        }
-    }
 }
 
-span.icon-star {
+app-like-star {
     position: absolute;
     top: 8px;
     right: 8px;
