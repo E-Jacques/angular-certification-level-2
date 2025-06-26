@@ -15,7 +15,7 @@ export class CocktailStoreService {
   /**
    * The storage used to persist liked cocktail. 
    */
-  private storage = inject(STORAGE);
+  private readonly storage = inject(STORAGE);
 
   /**
    * An subject used to dynamically providing new list of liked cocktails.

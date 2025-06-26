@@ -20,12 +20,12 @@ export class CocktailListComponent {
   /**
    * The cocktail state service dependency.
    */
-  private stateService = inject(CocktailStateService);
+  private readonly stateService = inject(CocktailStateService);
 
   /**
    * The cocktail store service dependency.
    */
-  private storeService = inject(CocktailStoreService);
+  private readonly storeService = inject(CocktailStoreService);
 
   /**
    * The filter object, wrapped in a signal, that is used to filter unwanted cocktails.

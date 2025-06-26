@@ -13,11 +13,11 @@ export class CocktailStateService {
   /**
    * The http service dependency.
    */
-  private httpService = inject(CocktailHttpService);
+  private readonly httpService = inject(CocktailHttpService);
   /**
    * The store service dependency.
    */
-  private storeService = inject(CocktailStoreService);
+  private readonly storeService = inject(CocktailStoreService);
 
   private readonly rawCocktails: Signal<GetCocktailsDto | undefined> = toSignal(this.httpService.getCocktails());
 

@@ -7,7 +7,10 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CocktailHttpService {
-  private httpClient = inject(HttpClient);
+  /**
+   * the http client dependency.
+   */
+  private readonly httpClient = inject(HttpClient);
 
   /**
    * Send an HTTP request to `GET /cocktails`.
