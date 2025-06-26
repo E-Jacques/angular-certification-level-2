@@ -47,4 +47,27 @@ describe('CocktailHttpService', () => {
       done();
     });
   });
+
+  it("should make an HTTP GET request to '/cocktails/:id'", (done): void => {
+    const httpTesting = TestBed.inject(HttpTestingController);
+
+    const cocktails$ = firstValueFrom(service.getCocktailById("123"));
+
+    const req = httpTesting.expectOne('/cocktails/123');
+    expect(req.request.method).toBe('GET');
+    req.flush(
+      {
+        id: "123",
+        name: 'Mojito',
+        isAlcoholic: true,
+        imageUrl: 'https://example.com/mojito.jpg',
+        ingredients: ['Mint', 'Lime', 'Rum', 'Sugar', 'Soda Water'],
+        instructions: 'Mix all ingredients and serve chilled.'
+      });
+
+    cocktails$.then(cocktail => {
+      expect(cocktail.name).toBe('Mojito');
+      done();
+    });
+  })
 });

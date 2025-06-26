@@ -6,6 +6,7 @@ import { Cocktail } from '../../@types/internal/cocktails';
 import { CocktailStoreService } from '../../services/cocktail-store.service';
 import { CocktailsTagsComponent } from "../../components/cocktails-tags/cocktails-tags.component";
 import { LikeStarComponent } from "../../components/like-star/like-star.component";
+import { CocktailMapperService } from '../../services/mapper/cocktail-mapper.service';
 
 @Component({
   selector: 'app-cocktail-detail',
@@ -19,6 +20,10 @@ export class CocktailDetailComponent {
    * The cocktail store service dependency.
    */
   private readonly storeService = inject(CocktailStoreService);
+  /**
+   * The cocktail mapper service dependency.
+   */
+  private readonly mapperService = inject(CocktailMapperService);
 
   /**
    * The cocktail dto associated with the view page.
@@ -45,7 +50,7 @@ export class CocktailDetailComponent {
 
     let newCocktailObject: Cocktail | null = null;
     if (cocktail) {
-      newCocktailObject = { ...cocktail, liked: likedId.includes(cocktail.id) }
+      newCocktailObject = this.mapperService.fromDtoToInternal(cocktail, likedId);
     }
 
     return newCocktailObject;

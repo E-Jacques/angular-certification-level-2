@@ -2,17 +2,17 @@ import { TestBed } from '@angular/core/testing';
 import { CocktailStateService } from './cocktail-state.service';
 import { CocktailHttpService } from './http/cocktail-http.service';
 import { of, Subject } from 'rxjs';
-import { GetCocktailsDto } from '../@types/dto/get-cocktails';
+import { CocktailItem, GetCocktailsDto } from '../@types/dto/get-cocktails';
 import { CocktailStoreService } from './cocktail-store.service';
 import { signal, WritableSignal } from '@angular/core';
-import { COCKTAILS_DTO } from '../utils/mock-cocktail';
+import { COCKTAIL_ITEM, COCKTAILS_DTO } from '../utils/mock-cocktail';
 
 describe('CocktailStateService', () => {
   let service: CocktailStateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
-      .overrideProvider(CocktailHttpService, { useValue: { getCocktails: () => of([]) } })
+      .overrideProvider(CocktailHttpService, { useValue: { getCocktails: () => of([]), getCocktailById: () => of(COCKTAIL_ITEM) } })
       .overrideProvider(CocktailStoreService, { useValue: { getLikedId: () => signal<string[]>([]).asReadonly() } });
   });
 
@@ -142,4 +142,18 @@ describe('CocktailStateService', () => {
       }
     ]);
   })
+
+  it('should forward the call to http service when a cocktail is fetched by id', (done): void => {
+    const httpService = TestBed.inject(CocktailHttpService);
+    spyOn(httpService, 'getCocktailById').and.returnValue(of(COCKTAIL_ITEM));
+
+    service = TestBed.inject(CocktailStateService);
+
+    service.getCocktail('1').subscribe((cocktailItem: CocktailItem): void => {
+      expect(httpService.getCocktailById).toHaveBeenCalledWith('1');
+      expect(cocktailItem).toEqual(COCKTAIL_ITEM);
+      done();
+    });
+
+  });
 });

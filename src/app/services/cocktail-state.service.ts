@@ -5,6 +5,7 @@ import { CocktailHttpService } from './http/cocktail-http.service';
 import { Cocktail } from '../@types/internal/cocktails';
 import { CocktailStoreService } from './cocktail-store.service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { CocktailMapperService } from './mapper/cocktail-mapper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,16 @@ export class CocktailStateService {
    * The http service dependency.
    */
   private readonly httpService = inject(CocktailHttpService);
+
   /**
    * The store service dependency.
    */
   private readonly storeService = inject(CocktailStoreService);
+
+  /**
+   * The mapper service dependency.
+   */
+  private readonly mapperService = inject(CocktailMapperService);
 
   /**
    * The list of every cocktails available.
@@ -32,7 +39,7 @@ export class CocktailStateService {
     const likedId = this.storeService.getLikedId()();
 
     if (raw) {
-      return raw.map(cocktail => this.fromDtoToInternal(cocktail, likedId))
+      return raw.map(cocktail => this.mapperService.fromDtoToInternal(cocktail, likedId))
     } else {
       return [];
     }
@@ -55,16 +62,5 @@ export class CocktailStateService {
    */
   public getCocktail(id: string): Observable<CocktailItem> {
     return this.httpService.getCocktailById(id);
-  }
-
-  /**
-   * Map the DTO to the internal type.
-   * 
-   * @param cocktail the dto
-   * @param likedId the list of liked cocktails
-   * @returns the internal type
-   */
-  public fromDtoToInternal(cocktail: CocktailItem, likedId: string[]): Cocktail {
-    return { ...cocktail, liked: likedId.includes(cocktail.id) }
   }
 }
