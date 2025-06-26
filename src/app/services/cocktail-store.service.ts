@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { STORAGE } from '../providers/provide-storage';
 
@@ -20,7 +20,7 @@ export class CocktailStoreService {
   /**
    * An subject used to dynamically providing new list of liked cocktails.
    */
-  private likedId: Subject<string[]> = new BehaviorSubject<string[]>(this.getFromStorage());
+  private likedId: WritableSignal<string[]> = signal<string[]>(this.getFromStorage());
 
   /**
    * Retrieve, from the browser storage, the liked cocktails.
@@ -66,7 +66,7 @@ export class CocktailStoreService {
       likes.push(id)
     }
 
-    this.likedId.next(likes);
+    this.likedId.set(likes);
     this.persistToStorage(likes);
   }
 
@@ -75,7 +75,7 @@ export class CocktailStoreService {
    * 
    * @returns an observable wrapping the liked cocktails
    */
-  public getLikedId(): Observable<string[]> {
-    return this.likedId.asObservable()
+  public getLikedId(): Signal<string[]> {
+    return this.likedId.asReadonly();
   }
 }

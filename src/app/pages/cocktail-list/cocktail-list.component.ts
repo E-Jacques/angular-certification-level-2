@@ -6,12 +6,13 @@ import { AsyncPipe } from '@angular/common';
 import { CocktailCardComponent } from "../../components/cocktail-card/cocktail-card.component";
 import { FilterCocktailsPipe } from "../../pipes/filter-cocktails.pipe";
 import { CocktailStoreService } from '../../services/cocktail-store.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cocktail-list',
   standalone: true,
-  imports: [FilterHeaderComponent, AsyncPipe, CocktailCardComponent, FilterCocktailsPipe],
-  providers: [AsyncPipe, FilterCocktailsPipe],
+  imports: [FilterHeaderComponent, CocktailCardComponent, FilterCocktailsPipe],
+  providers: [FilterCocktailsPipe],
   templateUrl: './cocktail-list.component.html',
   styleUrl: './cocktail-list.component.scss'
 })
@@ -34,7 +35,7 @@ export class CocktailListComponent {
   /**
    * The list, wrapped in an observable, of all cocktails.
    */
-  protected cocktails$ = this.stateService.getCocktails();
+  protected cocktails = this.stateService.getCocktails();
 
   /**
    * Handles the filter change.

@@ -1,0 +1,38 @@
+<header>
+    <nav>
+        <button [routerLink]="['/']">
+            <span class="material-symbols-outlined"> house</span>
+            Back
+        </button>
+    </nav>
+</header>
+
+<main>
+    @if (cocktailBO(); as cocktail) {
+    <img [src]="cocktail.imageUrl" alt="" aria-hidden="true">
+    <div class="col">
+        <div class="header">
+            <h2>{{ cocktail.name }}</h2>
+            <span class="icon-star" [ngClass]="{ 'active': cocktail.liked }" tabindex="0"
+                [attr.id]="'star-' + cocktail.id" (click)="onIconStarClick()" (keyup.enter)="onIconStarClick()"></span>
+        </div>
+        <div class="body">
+            <strong>Type:</strong>
+            <p class="alcoholic-label" data-testid="alcoholic-label"
+                [ngClass]="{ 'alcoholic': cocktail.isAlcoholic, 'non-alcoholic': !cocktail.isAlcoholic }">
+                {{ cocktail.isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
+            </p>
+            <strong>Ingredients:</strong>
+            <ul>
+                @for (ingredient of cocktail.ingredients; track ingredient) {
+                <li>{{ ingredient }}</li>
+                }
+            </ul>
+            <strong>Instructions:</strong>
+            <p>
+                {{ cocktail.instructions}}
+            </p>
+        </div>
+    </div>
+    }
+</main>

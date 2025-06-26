@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Cocktail } from '../../@types/internal/cocktails';
 import { NgClass } from '@angular/common';
 import { JoinPipe } from "../../pipes/join.pipe";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cocktail-card',
   standalone: true,
-  imports: [NgClass, JoinPipe],
+  imports: [NgClass, JoinPipe, RouterLink],
   providers: [JoinPipe],
   templateUrl: './cocktail-card.component.html',
   styleUrl: './cocktail-card.component.scss'

@@ -1,38 +1,50 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-
-import { CocktailListComponent } from './cocktail-list.component';
-import { CocktailStateService } from '../../services/cocktail-state.service';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { provideRouter, Router, RouterLink, Routes, withRouterConfig } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Cocktail } from '../../@types/internal/cocktails';
 import { CocktailCardComponent } from '../../components/cocktail-card/cocktail-card.component';
 import { FilterHeaderComponent } from '../../components/filter-header/filter-header.component';
-import { Cocktail } from '../../@types/internal/cocktails';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { CocktailStateService } from '../../services/cocktail-state.service';
 import { CocktailStoreService } from '../../services/cocktail-store.service';
+import { CocktailListComponent } from './cocktail-list.component';
+import { Component, Directive, EventEmitter, Input, Output, signal, WritableSignal } from '@angular/core';
 
+@Component({
+  selector: 'app-cocktail-card',
+  standalone: true,
+  template: ''
+})
+export class FakeCocktailCardComponent {
+  @Input({ required: true }) cocktail!: Cocktail;
+  @Output() toggleLike = new EventEmitter<void>();
+}
 
 describe('CocktailListComponent', () => {
-  let component: CocktailListComponent;
   let fixture: ComponentFixture<CocktailListComponent>;
-  let cocktails$: Subject<Cocktail[]>;
+  let cocktails: WritableSignal<Cocktail[]>;
 
   beforeEach(async () => {
-    cocktails$ = new BehaviorSubject<Cocktail[]>([]);
+    cocktails = signal<Cocktail[]>([]);
 
     await TestBed.configureTestingModule({
       imports: [CocktailListComponent]
     })
-      .overrideProvider(CocktailStateService, { useValue: { getCocktails: () => cocktails$.asObservable() } })
+      .overrideComponent(CocktailListComponent, {
+        add: { imports: [FakeCocktailCardComponent] },
+        remove: { imports: [CocktailCardComponent] }
+      })
+      .overrideProvider(CocktailStateService, { useValue: { getCocktails: () => cocktails.asReadonly() } })
       .overrideProvider(CocktailStoreService, { useValue: { toggleLike: () => { } } })
       .compileComponents();
 
     fixture = TestBed.createComponent(CocktailListComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should display all cocktails with its own card', () => {
-    cocktails$.next([
+    cocktails.set([
       {
         id: "1",
         name: 'Mojito',
@@ -54,19 +66,19 @@ describe('CocktailListComponent', () => {
     ]);
     fixture.detectChanges();
 
-    expect(fixture.debugElement.queryAll(By.directive(CocktailCardComponent))).toHaveSize(2);
+    expect(fixture.debugElement.queryAll(By.directive(FakeCocktailCardComponent))).toHaveSize(2);
   });
 
   it("should handle the empty cocktail list gracefully", () => {
-    cocktails$.next([]);
+    cocktails.set([]);
     fixture.detectChanges();
 
-    expect(fixture.debugElement.queryAll(By.directive(CocktailCardComponent))).toHaveSize(0);
+    expect(fixture.debugElement.queryAll(By.directive(FakeCocktailCardComponent))).toHaveSize(0);
     expect(fixture.nativeElement.textContent).toContain('No cocktails found');
   });
 
   it("should handle the filter header by remove cocktails that don't match the filter", () => {
-    cocktails$.next([
+    cocktails.set([
       {
         id: "1",
         name: 'Mojito',
@@ -92,16 +104,16 @@ describe('CocktailListComponent', () => {
     filterHeaderComponent.filterChange.emit({ name: 'irg' });
     fixture.detectChanges();
 
-    const cocktailCards = fixture.debugElement.queryAll(By.directive(CocktailCardComponent));
+    const cocktailCards: FakeCocktailCardComponent[] = fixture.debugElement.queryAll(By.directive(FakeCocktailCardComponent)).map(a => a.componentInstance);
     expect(cocktailCards).toHaveSize(1);
-    expect(cocktailCards[0].componentInstance.cocktail.name).toBe('Virgin Mojito');
+    expect(cocktailCards[0].cocktail.name).toBe('Virgin Mojito');
   });
 
   it("should execute the toggleLike method when received an event from cocktail card", (): void => {
     const storeService = TestBed.inject(CocktailStoreService);
     spyOn(storeService, "toggleLike");
 
-    cocktails$.next([
+    cocktails.set([
       {
         id: "1",
         name: 'Mojito',
@@ -123,7 +135,7 @@ describe('CocktailListComponent', () => {
     ]);
     fixture.detectChanges();
 
-    const cocktailCards: CocktailCardComponent[] = fixture.debugElement.queryAll(By.directive(CocktailCardComponent)).map(el => el.componentInstance);
+    const cocktailCards: FakeCocktailCardComponent[] = fixture.debugElement.queryAll(By.directive(FakeCocktailCardComponent)).map(el => el.componentInstance);
     cocktailCards[1].toggleLike.emit();
     fixture.detectChanges();
 

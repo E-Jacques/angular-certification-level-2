@@ -1,0 +1,35 @@
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    margin: 0;
+}
+
+.body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+main {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+img {
+    width: 33%;
+}
+
+button {
+    display: flex;
+    align-items: center;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}

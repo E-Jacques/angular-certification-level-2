@@ -4,10 +4,16 @@
     gap: 8px;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 8px;
+    margin: 0;
+    padding: 0;
 
     li {
         list-style: none;

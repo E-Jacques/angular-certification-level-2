@@ -1,6 +1,8 @@
 <img [src]="cocktail.imageUrl" alt="" aria-hidden="true">
 <div class="body">
-    <h2>{{ cocktail.name }}</h2>
+    <a [routerLink]="['cocktails', cocktail.id]">
+        <h2>{{ cocktail.name }}</h2>
+    </a>
     <p class="alcoholic-label" data-testid="alcoholic-label"
         [ngClass]="{ 'alcoholic': cocktail.isAlcoholic, 'non-alcoholic': !cocktail.isAlcoholic }">
         {{ cocktail.isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}

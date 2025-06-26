@@ -1,9 +1,10 @@
-import { inject, Injectable, Signal } from '@angular/core';
+import { computed, inject, Injectable, Signal } from '@angular/core';
 import { CocktailItem, GetCocktailsDto } from '../@types/dto/get-cocktails';
-import { BehaviorSubject, combineLatest, concatMap, Observable, of, startWith } from 'rxjs';
+import { BehaviorSubject, combineLatest, concatMap, map, Observable, of, startWith } from 'rxjs';
 import { CocktailHttpService } from './http/cocktail-http.service';
 import { Cocktail } from '../@types/internal/cocktails';
 import { CocktailStoreService } from './cocktail-store.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +19,33 @@ export class CocktailStateService {
    */
   private storeService = inject(CocktailStoreService);
 
+  private readonly rawCocktails: Signal<GetCocktailsDto | undefined> = toSignal(this.httpService.getCocktails());
+
   /**
    * A subject wrapping the internal cocktail list.
    */
-  private readonly cocktails: BehaviorSubject<Cocktail[]> = new BehaviorSubject<Cocktail[]>([]);
+  private readonly cocktails: Signal<Cocktail[]> = computed(() => {
+    const raw = this.rawCocktails();
+    const likedId = this.storeService.getLikedId()();
 
-  constructor() {
-    combineLatest([this.httpService.getCocktails(), this.storeService.getLikedId()]).subscribe({
-      next: ([cocktails, liked]) => {
-        this.cocktails.next(cocktails.map(cocktail => this.fromDtoToInternal(cocktail, liked)));
-      }, error: () => {
-        this.cocktails.next([]); // Reset to empty on error
-      }
-    });
-  }
+    if (raw) {
+      return raw.map(cocktail => this.fromDtoToInternal(cocktail, likedId))
+    } else {
+      return [];
+    }
+  });
 
   /**
    * Getter for the cocktails observable.
    * 
    * @returns the cocktails list
    */
-  public getCocktails(): Observable<Cocktail[]> {
-    return this.cocktails.asObservable();
+  public getCocktails(): Signal<Cocktail[]> {
+    return this.cocktails;
+  }
+
+  public getCocktail(id: string): Observable<CocktailItem> {
+    return this.httpService.getCocktailById(id);
   }
 
   /**
