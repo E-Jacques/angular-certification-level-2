@@ -5,11 +5,11 @@
 
 nav {
     margin: 0;
-}
 
-.body {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    button {
+        display: flex;
+        align-items: center;
+    }
 }
 
 main {
@@ -17,19 +17,34 @@ main {
     display: flex;
     flex-direction: row;
     gap: 16px;
-}
 
-img {
-    width: 33%;
-}
+    .body {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
 
-button {
-    display: flex;
-    align-items: center;
-}
+        .alcoholic-label {
+            color: white;
+            width: fit-content;
+            padding: 4px;
+            border-radius: 100px;
 
-.header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+            &.alcoholic {
+                background-color: blue;
+            }
+
+            &.non-alcoholic {
+                background-color: green;
+            }
+        }
+    }
+
+    img {
+        width: 33%;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
 }
