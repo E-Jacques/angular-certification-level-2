@@ -1,3 +1,5 @@
+/* istanbul ignore file : this file is only use for testing purpose */
+
 /**
  * In-memory implementation of the Storage interface. This can be used be used to simplify test around local storage.
  * 
