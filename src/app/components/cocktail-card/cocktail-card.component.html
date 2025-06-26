@@ -1,13 +1,13 @@
-<img [src]="cocktail.imageUrl" alt="" aria-hidden="true">
+<img [src]="cocktail().imageUrl" alt="" aria-hidden="true">
 <div class="body">
-    <a [routerLink]="['cocktails', cocktail.id]">
-        <h2>{{ cocktail.name }}</h2>
+    <a [routerLink]="['cocktails', cocktail().id]">
+        <h2>{{ cocktail().name }}</h2>
     </a>
     <p class="alcoholic-label" data-testid="alcoholic-label"
-        [ngClass]="{ 'alcoholic': cocktail.isAlcoholic, 'non-alcoholic': !cocktail.isAlcoholic }">
-        {{ cocktail.isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
+        [ngClass]="{ 'alcoholic': cocktail().isAlcoholic, 'non-alcoholic': !cocktail().isAlcoholic }">
+        {{ cocktail().isAlcoholic ? 'Alcoholic' : 'Non alcoholic' }}
     </p>
-    <p data-testid="ingredients">{{ cocktail.ingredients | join: ' | ' }}</p>
+    <p data-testid="ingredients">{{ cocktail().ingredients | join: ' | ' }}</p>
 </div>
-<span class="icon-star" tabindex="0" [attr.id]="'star-' + cocktail.id" [ngClass]="{'active': cocktail.liked}"
+<span class="icon-star" tabindex="0" [attr.id]="'star-' + cocktail().id" [ngClass]="{'active': cocktail().liked}"
     (click)="onIconStarClick()" (keyup.enter)="onIconStarClick()"></span>

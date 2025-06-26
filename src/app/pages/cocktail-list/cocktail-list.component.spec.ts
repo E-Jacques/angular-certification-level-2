@@ -1,15 +1,12 @@
+import { Component, input, InputSignal, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingHarness } from '@angular/router/testing';
-import { provideRouter, Router, RouterLink, Routes, withRouterConfig } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
 import { Cocktail } from '../../@types/internal/cocktails';
 import { CocktailCardComponent } from '../../components/cocktail-card/cocktail-card.component';
 import { FilterHeaderComponent } from '../../components/filter-header/filter-header.component';
 import { CocktailStateService } from '../../services/cocktail-state.service';
 import { CocktailStoreService } from '../../services/cocktail-store.service';
 import { CocktailListComponent } from './cocktail-list.component';
-import { Component, Directive, EventEmitter, Input, Output, signal, WritableSignal } from '@angular/core';
 
 @Component({
   selector: 'app-cocktail-card',
@@ -17,8 +14,8 @@ import { Component, Directive, EventEmitter, Input, Output, signal, WritableSign
   template: ''
 })
 export class FakeCocktailCardComponent {
-  @Input({ required: true }) cocktail!: Cocktail;
-  @Output() toggleLike = new EventEmitter<void>();
+  public readonly cocktail: InputSignal<Cocktail> = input.required<Cocktail>();
+  public readonly toggleLike: OutputEmitterRef<void> = output<void>();
 }
 
 describe('CocktailListComponent', () => {
@@ -106,7 +103,7 @@ describe('CocktailListComponent', () => {
 
     const cocktailCards: FakeCocktailCardComponent[] = fixture.debugElement.queryAll(By.directive(FakeCocktailCardComponent)).map(a => a.componentInstance);
     expect(cocktailCards).toHaveSize(1);
-    expect(cocktailCards[0].cocktail.name).toBe('Virgin Mojito');
+    expect(cocktailCards[0].cocktail().name).toBe('Virgin Mojito');
   });
 
   it("should execute the toggleLike method when received an event from cocktail card", (): void => {

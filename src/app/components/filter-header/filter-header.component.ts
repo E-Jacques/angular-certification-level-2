@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, output, Output, OutputEmitterRef, SimpleChanges } from '@angular/core';
 import { CocktailFilter } from '../../@types/internal/filter';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ export class FilterHeaderComponent {
   /**
    * The placeholder text for the filter input.
    */
-  @Output() filterChange = new EventEmitter<CocktailFilter>();
+  public readonly filterChange: OutputEmitterRef<CocktailFilter> = output<CocktailFilter>();
 
   /**
    * The form group used to handle filters. Default values should be provided by the input filter.

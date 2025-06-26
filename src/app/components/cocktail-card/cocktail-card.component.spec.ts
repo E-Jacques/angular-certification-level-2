@@ -4,16 +4,8 @@ import { CocktailCardComponent } from './cocktail-card.component';
 import { By } from '@angular/platform-browser';
 import { JoinPipe } from '../../pipes/join.pipe';
 import { Cocktail } from '../../@types/internal/cocktails';
-import { Directive, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-@Directive({
-  selector: '[routerLink]',
-  standalone: true
-})
-export class MockRouterLinkDirective {
-  @Input() routerLink: string[];
-}
+import { FakeRouterLinkDirective } from '../../utils/fake-router-link.directive';
 
 const COCKTAIL: Cocktail = {
   id: "1",
@@ -35,7 +27,7 @@ describe('CocktailCardComponent', () => {
       imports: [CocktailCardComponent]
     })
       .overrideComponent(CocktailCardComponent, {
-        add: { imports: [MockRouterLinkDirective] },
+        add: { imports: [FakeRouterLinkDirective] },
         remove: { imports: [RouterLink] }
       })
       .compileComponents();

@@ -1,21 +1,12 @@
+import { signal, WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CocktailDetailComponent } from './cocktail-detail.component';
-import { Router, RouterLink } from '@angular/router';
 import { By } from '@angular/platform-browser';
-import { Cocktail } from '../../@types/internal/cocktails';
-import { CocktailStoreService } from '../../services/cocktail-store.service';
-import { CocktailStateService } from '../../services/cocktail-state.service';
-import { of } from 'rxjs';
-import { Directive, Input, signal, WritableSignal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CocktailItem } from '../../@types/dto/get-cocktails';
-
-@Directive({
-  selector: '[routerLink]',
-  standalone: true
-})
-export class MockRouterLinkDirective {
-  @Input() routerLink: string[];
-}
+import { CocktailStoreService } from '../../services/cocktail-store.service';
+import { FakeCocktailCardComponent } from '../cocktail-list/cocktail-list.component.spec';
+import { CocktailDetailComponent } from './cocktail-detail.component';
+import { FakeRouterLinkDirective } from '../../utils/fake-router-link.directive';
 
 const COCKTAIL: CocktailItem = {
   id: "my-id",
@@ -37,8 +28,8 @@ describe('CocktailDetailComponent', () => {
       imports: [CocktailDetailComponent]
     })
       .overrideComponent(CocktailDetailComponent, {
+        add: { imports: [FakeRouterLinkDirective] },
         remove: { imports: [RouterLink] },
-        add: { imports: [MockRouterLinkDirective] }
       })
       .overrideProvider(CocktailStoreService, {
         useValue: { toggleLike() { }, getLikedId: () => likedId.asReadonly() }

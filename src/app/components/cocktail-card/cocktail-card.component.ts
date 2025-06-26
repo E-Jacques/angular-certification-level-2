@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, InputSignal, output, Output, OutputEmitterRef } from '@angular/core';
 import { Cocktail } from '../../@types/internal/cocktails';
 import { NgClass } from '@angular/common';
 import { JoinPipe } from "../../pipes/join.pipe";
@@ -24,12 +24,12 @@ export class CocktailCardComponent {
   /**
    * The internal object representing a cocktail. Those informations are used to render the card.
    */
-  @Input({ required: true }) cocktail!: Cocktail;
+  public readonly cocktail: InputSignal<Cocktail> = input.required<Cocktail>();
 
   /**
    * Triggered when user clicked the star icon
    */
-  @Output() toggleLike = new EventEmitter<void>();
+  public readonly toggleLike: OutputEmitterRef<void> = output<void>();
 
   /**
    * Handle the click event on the icon star element.
