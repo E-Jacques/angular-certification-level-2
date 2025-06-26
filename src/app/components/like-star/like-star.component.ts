@@ -23,6 +23,9 @@ export class LikeStarComponent {
    */
   public readonly cocktail: InputSignal<Cocktail> = input.required<Cocktail>();
 
+  /**
+   * The like button have been toggle by the user.
+   */
   public readonly toggle: OutputEmitterRef<void> = output<void>();
 
   /**

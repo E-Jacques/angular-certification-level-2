@@ -12,7 +12,7 @@
     <img [src]="cocktail.imageUrl" alt="" aria-hidden="true">
     <div class="col">
         <div class="header">
-            <h2>{{ cocktail.name }}</h2>
+            <h1>{{ cocktail.name }}</h1>
             <app-like-star [cocktail]="cocktail" (toggle)="onToggleLike()"></app-like-star>
         </div>
         <div class="body">

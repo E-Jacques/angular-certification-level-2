@@ -19,6 +19,9 @@ export class CocktailStateService {
    */
   private readonly storeService = inject(CocktailStoreService);
 
+  /**
+   * The list of every cocktails available.
+   */
   private readonly rawCocktails: Signal<GetCocktailsDto | undefined> = toSignal(this.httpService.getCocktails());
 
   /**
@@ -44,6 +47,12 @@ export class CocktailStateService {
     return this.cocktails;
   }
 
+  /**
+   * Fetch details on a cocktail.
+   * 
+   * @param id the identifier of the cocktail that we want to fetch.
+   * @returns the cocktail details associated with the identifier.
+   */
   public getCocktail(id: string): Observable<CocktailItem> {
     return this.httpService.getCocktailById(id);
   }

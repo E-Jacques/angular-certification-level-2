@@ -19,32 +19,24 @@ main {
     gap: 16px;
 
     .body {
+        margin-top: 16px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-
-        .alcoholic-label {
-            color: white;
-            width: fit-content;
-            padding: 4px;
-            border-radius: 100px;
-
-            &.alcoholic {
-                background-color: blue;
-            }
-
-            &.non-alcoholic {
-                background-color: green;
-            }
-        }
+        align-items: center;
     }
 
     img {
         width: 33%;
+        height: 100%;
     }
 
     .header {
         display: flex;
         align-items: center;
         gap: 16px;
+
+        h1 {
+            margin: 0;
+        }
     }
 }

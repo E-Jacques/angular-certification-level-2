@@ -14,10 +14,6 @@ describe('CocktailHttpService', () => {
     service = TestBed.inject(CocktailHttpService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
   it("should make an HTTP GET request to '/cocktails'", (done) => {
     const httpTesting = TestBed.inject(HttpTestingController);
 
